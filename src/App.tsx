@@ -12,7 +12,10 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
-import AdminDashboard from "./pages/admin/AdminDashboard";
+import BranchDashboard from "./pages/admin/BranchDashboard";
+import CompanyDashboard from "./pages/company/CompanyDashboard";
+import CompanyBranchDetailPage from "./pages/company/CompanyBranchDetailPage";
+import CompanyBranchCreatePage from "./pages/company/CompanyBranchCreatePage";
 import AgentDashboard from "./pages/agent/AgentDashboard";
 import AdminAgentsPage from "./pages/admin/AdminAgentsPage";
 import AgentsPage from "./pages/owner/AgentsPage";
@@ -103,8 +106,13 @@ const App = () => (
             <Route path="/owner/feedback" element={<FeedbackPage />} />
             <Route path="/owner/audit-log" element={<AuditLogPage />} />
             
+                        {/* Company Admin routes */}
+            <Route path="/company/dashboard" element={<CompanyDashboard />} />
+            <Route path="/company/branches/:branchId" element={<CompanyBranchDetailPage />} />
+            <Route path="/company/branches/new" element={<CompanyBranchCreatePage />} />
+
             {/* Admin routes */}
-            <Route path="/admin/dashboard" element={<AdminDashboard />} />
+            <Route path="/admin/dashboard" element={<BranchDashboard />} />
             <Route path="/admin/learn" element={<LearnPage />} />
             <Route path="/admin/students" element={<StudentsPage />} />
             <Route path="/admin/students/:id" element={<StudentDetailPage />} />
