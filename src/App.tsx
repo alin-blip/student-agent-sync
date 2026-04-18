@@ -41,6 +41,7 @@ import SocialPostsPage from "./pages/shared/SocialPostsPage";
 import AgentSocialFeedPage from "./pages/shared/AgentSocialFeedPage";
 import UniversitiesCoursesPage from "./pages/shared/UniversitiesCoursesPage";
 import EmbedManagerPage from "./pages/shared/EmbedManagerPage";
+import AIEmailGeneratorPage from "./pages/shared/AIEmailGeneratorPage";
 import ForBusinessPage from "./pages/public/ForBusinessPage";
 import ApplyPartnerPage from "./pages/public/ApplyPartnerPage";
 import ThankYouPage from "./pages/public/ThankYouPage";
@@ -125,6 +126,7 @@ const App = () => (
             <Route path="/company/branches/:branchId" element={<CompanyBranchDetailPage />} />
             <Route path="/company/branches/new" element={<CompanyBranchCreatePage />} />
             <Route path="/company/embed-manager" element={<EmbedManagerPage />} />
+            <Route path="/company/email-generator" element={<AIEmailGeneratorPage />} />
 
             {/* Admin routes */}
             <Route path="/admin/dashboard" element={<BranchDashboard />} />
@@ -134,6 +136,7 @@ const App = () => (
             <Route path="/admin/enrollments" element={<EnrollmentsPage />} />
             <Route path="/admin/messages" element={<MessagesPage />} />
             <Route path="/admin/agents" element={<AdminAgentsPage />} />
+            <Route path="/admin/email-generator" element={<AIEmailGeneratorPage />} />
             
             <Route path="/admin/invoices" element={<InvoicesPage />} />
             <Route path="/admin/profile" element={<ProfilePage />} />

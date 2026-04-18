@@ -197,6 +197,7 @@ export function AppSidebar() {
   } else if (role === APP_ROLES.BRANCH_MANAGER) {
     managementItems.push(
       { title: "My Consultants", url: `/admin/agents`, icon: UserCog },
+      { title: "Email Generator", url: `/admin/email-generator`, icon: Mail },
     );
   } else if (role === APP_ROLES.COMPANY_ADMIN) {
     // Company Admin specific items
