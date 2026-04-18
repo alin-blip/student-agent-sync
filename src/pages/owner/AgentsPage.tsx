@@ -21,6 +21,7 @@ import { Plus, KeyRound, Eye, EyeOff } from "lucide-react";
 import { format, formatDistanceToNow } from "date-fns";
 import { AddressLookupInput } from "@/components/AddressLookupInput";
 import { usePresenceMap } from "@/contexts/PresenceContext";
+import { APP_ROLES } from "@/lib/roles";
 
 export default function AgentsPage() {
   const { user } = useAuth();
@@ -30,18 +31,10 @@ export default function AgentsPage() {
   const [open, setOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
   const [newName, setNewName] = useState("");
-  const [newRole, setNewRole] = useState<string>("agent");
-  const [newPassword, setNewPassword] = useState("");
-  const [newAdminId, setNewAdminId] = useState("");
+  const [newRole, setNewRole] = useState<string>(APP_ROLES.CONSULTANT);
+  const [newAdminId, setNewAdminId] = useState(""); // This will now be branch_manager_id
   const [newPostcode, setNewPostcode] = useState("");
   const [newAddress, setNewAddress] = useState("");
-
-  // Password dialog state
-  const [pwDialogOpen, setPwDialogOpen] = useState(false);
-  const [pwUserId, setPwUserId] = useState("");
-  const [pwUserName, setPwUserName] = useState("");
-  const [pwNew, setPwNew] = useState("");
-  const [pwVisible, setPwVisible] = useState(false);
 
   const { data: profiles = [] } = useQuery({
     queryKey: ["all-profiles"],
@@ -59,27 +52,17 @@ export default function AgentsPage() {
     },
   });
 
-  const { data: passwords = [] } = useQuery({
-    queryKey: ["all-passwords"],
-    queryFn: async () => {
-      const { data } = await supabase.from("user_passwords").select("user_id, password_plaintext");
-      return (data as any[]) || [];
-    },
-  });
-
-  const passwordMap = new Map(passwords.map((p: any) => [p.user_id, p.password_plaintext]));
   const roleMap = new Map(roles.map((r: any) => [r.user_id, r.role]));
-  const admins = profiles.filter((p: any) => roleMap.get(p.id) === "admin");
+  const branchManagers = profiles.filter((p: any) => roleMap.get(p.id) === APP_ROLES.BRANCH_MANAGER);
 
   const createUser = useMutation({
     mutationFn: async () => {
       const { data, error } = await supabase.functions.invoke("create-owner", {
         body: {
           email: newEmail,
-          password: newPassword,
           full_name: newName,
           role: newRole,
-          admin_id: newRole === "agent" && newAdminId ? newAdminId : undefined,
+          branch_manager_id: newRole === APP_ROLES.CONSULTANT && newAdminId ? newAdminId : undefined,
           postcode: newPostcode || undefined,
           address: newAddress || undefined,
         },
@@ -89,7 +72,7 @@ export default function AgentsPage() {
       return data;
     },
     onSuccess: async (data: any) => {
-      if (data?.user_id && newRole === "agent") {
+      if (data?.user_id && newRole === APP_ROLES.CONSULTANT) {
         try {
           const conversationPartnerId = newAdminId || user?.id;
           if (conversationPartnerId) {
@@ -111,13 +94,11 @@ export default function AgentsPage() {
       }
       queryClient.invalidateQueries({ queryKey: ["all-profiles"] });
       queryClient.invalidateQueries({ queryKey: ["all-roles"] });
-      queryClient.invalidateQueries({ queryKey: ["all-passwords"] });
       toast({ title: "User created successfully" });
       setOpen(false);
       setNewEmail("");
       setNewName("");
-      setNewPassword("");
-      setNewRole("agent");
+      setNewRole(APP_ROLES.CONSULTANT);
       setNewAdminId("");
       setNewPostcode("");
       setNewAddress("");
@@ -154,36 +135,8 @@ export default function AgentsPage() {
     },
   });
 
-  const resetPassword = useMutation({
-    mutationFn: async () => {
-      const { data, error } = await supabase.functions.invoke("reset-user-password", {
-        body: { user_id: pwUserId, new_password: pwNew },
-      });
-      if (error) throw error;
-      if (data?.error) throw new Error(data.error);
-      return data;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["all-passwords"] });
-      toast({ title: "Password updated successfully" });
-      setPwDialogOpen(false);
-      setPwNew("");
-    },
-    onError: (error: any) => {
-      toast({ title: "Error", description: error.message, variant: "destructive" });
-    },
-  });
-
-  const openPwDialog = (userId: string, userName: string) => {
-    setPwUserId(userId);
-    setPwUserName(userName);
-    setPwNew("");
-    setPwVisible(false);
-    setPwDialogOpen(true);
-  };
-
   return (
-    <DashboardLayout allowedRoles={["owner"]}>
+    <DashboardLayout allowedRoles={[APP_ROLES.SUPER_ADMIN]}>
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">Manage Users</h1>
@@ -207,26 +160,23 @@ export default function AgentsPage() {
                   <Input type="email" value={newEmail} onChange={(e) => setNewEmail(e.target.value)} placeholder="email@example.com" />
                 </div>
                 <div className="space-y-2">
-                  <Label>Password</Label>
-                  <Input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} placeholder="Min 6 characters" />
-                </div>
-                <div className="space-y-2">
                   <Label>Role</Label>
                   <Select value={newRole} onValueChange={setNewRole}>
                     <SelectTrigger><SelectValue /></SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="admin">Admin</SelectItem>
-                      <SelectItem value="agent">Agent</SelectItem>
+                      <SelectItem value={APP_ROLES.COMPANY_ADMIN}>Company Admin</SelectItem>
+                      <SelectItem value={APP_ROLES.BRANCH_MANAGER}>Branch Manager</SelectItem>
+                      <SelectItem value={APP_ROLES.CONSULTANT}>Consultant</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                {newRole === "agent" && admins.length > 0 && (
+                {newRole === APP_ROLES.CONSULTANT && branchManagers.length > 0 && (
                   <div className="space-y-2">
-                    <Label>Assign to Admin</Label>
+                    <Label>Assign to Branch Manager</Label>
                     <Select value={newAdminId} onValueChange={setNewAdminId}>
-                      <SelectTrigger><SelectValue placeholder="Select admin (optional)" /></SelectTrigger>
+                      <SelectTrigger><SelectValue placeholder="Select branch manager (optional)" /></SelectTrigger>
                       <SelectContent>
-                        {admins.map((a: any) => (
+                        {branchManagers.map((a: any) => (
                           <SelectItem key={a.id} value={a.id}>{a.full_name}</SelectItem>
                         ))}
                       </SelectContent>
@@ -242,7 +192,7 @@ export default function AgentsPage() {
                 <Button
                   className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
                   onClick={() => createUser.mutate()}
-                  disabled={!newEmail || !newName || !newPassword || createUser.isPending}
+                  disabled={!newEmail || !newName || createUser.isPending}
                 >
                   {createUser.isPending ? "Creating…" : "Create User"}
                 </Button>
@@ -270,67 +220,55 @@ export default function AgentsPage() {
                   <TableCell className="font-medium">{p.full_name}</TableCell>
                   <TableCell className="hidden sm:table-cell text-muted-foreground">{p.email}</TableCell>
                   <TableCell>
-                    {(roleMap.get(p.id) as string) === "owner" ? (
-                      <Badge variant="secondary" className="capitalize text-xs">owner</Badge>
+                    {(roleMap.get(p.id) as string) === APP_ROLES.SUPER_ADMIN ? (
+                      <Badge variant="secondary" className="capitalize text-xs">Super Admin</Badge>
+                    ) : (roleMap.get(p.id) as string) === APP_ROLES.COMPANY_ADMIN ? (
+                      <Badge variant="outline" className="capitalize text-xs">Company Admin</Badge>
+                    ) : (roleMap.get(p.id) as string) === APP_ROLES.BRANCH_MANAGER ? (
+                      <Badge variant="outline" className="capitalize text-xs">Branch Manager</Badge>
                     ) : (
-                      <Select
-                        value={(roleMap.get(p.id) as string) || ""}
-                        onValueChange={(val) => changeRole.mutate({ user_id: p.id, new_role: val })}
-                        disabled={changeRole.isPending}
-                      >
-                        <SelectTrigger className="w-[110px] h-8 text-xs">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Admin</SelectItem>
-                          <SelectItem value="agent">Agent</SelectItem>
-                        </SelectContent>
-                      </Select>
+                      <Badge variant="outline" className="capitalize text-xs">Consultant</Badge>
                     )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {(() => {
-                      const presence = presenceMap[p.id];
-                      const isOnline = presence?.is_online;
-                      const lastSeen = presence?.last_seen_at;
-                      return (
-                        <div className="flex items-center gap-2">
-                          <span className={`inline-block w-2.5 h-2.5 rounded-full ${isOnline ? "bg-green-500 animate-pulse" : "bg-muted-foreground/30"}`} />
-                          <span className="text-xs text-muted-foreground">
-                            {isOnline
-                              ? "Online"
-                              : lastSeen
-                                ? formatDistanceToNow(new Date(lastSeen), { addSuffix: true })
-                                : "Never"}
-                          </span>
-                        </div>
-                      );
-                    })()}
+                    {presenceMap.has(p.id) ? (
+                      <Badge variant="success" className="text-xs">Online</Badge>
+                    ) : (
+                      <Badge variant="outline" className="text-xs">Offline</Badge>
+                    )}
                   </TableCell>
                   <TableCell>
-                    <Badge variant={p.is_active ? "default" : "destructive"} className="text-xs">
-                      {p.is_active ? "Active" : "Inactive"}
-                    </Badge>
+                    {p.is_active ? (
+                      <Badge variant="success" className="text-xs">Active</Badge>
+                    ) : (
+                      <Badge variant="destructive" className="text-xs">Inactive</Badge>
+                    )}
                   </TableCell>
-                  <TableCell className="hidden md:table-cell text-muted-foreground text-sm">
-                    {format(new Date(p.created_at), "dd MMM yyyy")}
+                  <TableCell className="hidden md:table-cell text-muted-foreground text-xs">
+                    {format(new Date(p.created_at), "PPP")}
                   </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1">
-                      {(roleMap.get(p.id) as string) !== "owner" && (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => openPwDialog(p.id, p.full_name)}
-                          title="Password"
-                        >
-                          <KeyRound className="w-4 h-4" />
-                        </Button>
-                      )}
+                  <TableCell className="text-right">
+                    <div className="flex items-center space-x-2">
+                      <Select
+                        value={roleMap.get(p.id) as string}
+                        onValueChange={(newRole) => changeRole.mutate({ user_id: p.id, new_role: newRole })}
+                        disabled={roleMap.get(p.id) === APP_ROLES.SUPER_ADMIN} // Cannot change owner role
+                      >
+                        <SelectTrigger className="w-[120px] h-8 text-xs">
+                          <SelectValue placeholder="Change Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value={APP_ROLES.COMPANY_ADMIN}>Company Admin</SelectItem>
+                          <SelectItem value={APP_ROLES.BRANCH_MANAGER}>Branch Manager</SelectItem>
+                          <SelectItem value={APP_ROLES.CONSULTANT}>Consultant</SelectItem>
+                        </SelectContent>
+                      </Select>
                       <Button
-                        variant="ghost"
+                        variant="outline"
                         size="sm"
+                        className="h-8 w-8 p-0"
                         onClick={() => toggleActive.mutate({ id: p.id, is_active: !p.is_active })}
+                        disabled={p.id === user?.id} // Cannot deactivate self
                       >
                         {p.is_active ? "Deactivate" : "Activate"}
                       </Button>
@@ -341,47 +279,6 @@ export default function AgentsPage() {
             </TableBody>
           </Table>
         </div>
-
-        {/* Password Dialog */}
-        <Dialog open={pwDialogOpen} onOpenChange={setPwDialogOpen}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Password — {pwUserName}</DialogTitle>
-            </DialogHeader>
-            <div className="space-y-4 pt-2">
-              <div className="space-y-2">
-                <Label>Current Password</Label>
-                <div className="flex items-center gap-2">
-                  <Input
-                    readOnly
-                    type={pwVisible ? "text" : "password"}
-                    value={passwordMap.get(pwUserId) || "—"}
-                    className="bg-muted"
-                  />
-                  <Button variant="ghost" size="icon" onClick={() => setPwVisible(!pwVisible)}>
-                    {pwVisible ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                  </Button>
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label>New Password</Label>
-                <Input
-                  type="password"
-                  value={pwNew}
-                  onChange={(e) => setPwNew(e.target.value)}
-                  placeholder="Min 6 characters"
-                />
-              </div>
-              <Button
-                className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
-                onClick={() => resetPassword.mutate()}
-                disabled={!pwNew || pwNew.length < 6 || resetPassword.isPending}
-              >
-                {resetPassword.isPending ? "Updating…" : "Update Password"}
-              </Button>
-            </div>
-          </DialogContent>
-        </Dialog>
       </div>
     </DashboardLayout>
   );

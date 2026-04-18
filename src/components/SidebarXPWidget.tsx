@@ -3,12 +3,13 @@ import { Progress } from "@/components/ui/progress";
 import { Flame, Trophy, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
+import { getRolePrefix, APP_ROLES } from "@/lib/roles";
 
 export function SidebarXPWidget({ collapsed }: { collapsed: boolean }) {
   const { streak, levelInfo } = useAgentXP();
   const { role } = useAuth();
   const navigate = useNavigate();
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = getRolePrefix(role || APP_ROLES.CONSULTANT);
 
   const currentStreak = streak?.current_streak || 0;
   const totalXp = streak?.total_xp || 0;

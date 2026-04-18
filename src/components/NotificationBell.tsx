@@ -10,6 +10,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { formatDistanceToNow } from "date-fns";
 import { useNavigate } from "react-router-dom";
+import { getRolePrefix, APP_ROLES } from "@/lib/roles";
 
 type NotificationType = "message" | "task" | "enrollment" | "lead" | "social" | "invoice";
 
@@ -48,7 +49,7 @@ export function NotificationBell() {
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [readIds, setReadIds] = useState<Set<string>>(() => getReadIds(user?.id));
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = getRolePrefix(role || APP_ROLES.CONSULTANT);
 
   const { data: notifications = [] } = useQuery({
     queryKey: ["notifications-bell", user?.id],
@@ -148,7 +149,7 @@ export function NotificationBell() {
           .eq("status", "new")
           .order("created_at", { ascending: false })
           .limit(5);
-        if (role !== "owner") {
+        if (role !== APP_ROLES.SUPER_ADMIN) {
           leadsQuery = leadsQuery.eq("agent_id", user.id);
         }
         const { data: newLeads } = await leadsQuery;
@@ -167,7 +168,7 @@ export function NotificationBell() {
       }
 
       // 5. Pending tier upgrade requests (owner only)
-      if (role === "owner") {
+      if (role === APP_ROLES.SUPER_ADMIN) {
         const { data: upgrades } = await (supabase as any)
           .from("tier_upgrade_requests")
           .select("id, user_id, user_role, current_tier_name, new_tier_name, current_rate, new_rate, student_count, created_at")
@@ -222,7 +223,7 @@ export function NotificationBell() {
       }
 
       // 7. Invoice status updates (for agents/admins)
-      if (role !== "owner") {
+      if (role !== APP_ROLES.SUPER_ADMIN) {
         const { data: invoiceUpdates } = await (supabase as any)
           .from("invoice_requests")
           .select("id, invoice_number, status, amount, updated_at")

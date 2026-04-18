@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { GraduationCap, Eye, EyeOff } from "lucide-react";
+import { getHomeRoute } from "@/lib/roles";
 
 const MAX_ATTEMPTS = 5;
 const LOCKOUT_MS = 60 * 1000; // 1 minute
@@ -69,13 +70,7 @@ export default function Login() {
       _user_id: (await supabase.auth.getUser()).data.user?.id ?? "",
     });
 
-    const roleRoutes: Record<string, string> = {
-      owner: "/owner/dashboard",
-      admin: "/admin/dashboard",
-      agent: "/agent/dashboard",
-    };
-
-    navigate(roleRoutes[data as string] || "/");
+    navigate(getHomeRoute(data as string));
     setLoading(false);
   };
 

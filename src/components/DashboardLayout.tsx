@@ -7,10 +7,11 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { PresenceProvider } from "@/contexts/PresenceContext";
+import { getHomeRoute, getRoleLabel, APP_ROLES } from "@/lib/roles";
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  allowedRoles?: Array<"owner" | "admin" | "agent">;
+  allowedRoles?: Array<keyof typeof APP_ROLES>;
 }
 
 export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps) {
@@ -74,13 +75,8 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (allowedRoles && role && !allowedRoles.includes(role)) {
-    const roleRoutes: Record<string, string> = {
-      owner: "/owner/dashboard",
-      admin: "/admin/dashboard",
-      agent: "/agent/dashboard",
-    };
-    return <Navigate to={roleRoutes[role] || "/login"} replace />;
+  if (allowedRoles && role && !allowedRoles.includes(role as keyof typeof APP_ROLES)) {
+    return <Navigate to={getHomeRoute(role)} replace />;
   }
 
   return (
@@ -96,7 +92,7 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
             <div className="flex items-center gap-3">
               <NotificationBell />
               <Badge variant="outline" className="text-xs capitalize font-normal">
-                {role}
+                {getRoleLabel(role || '')}
               </Badge>
               <span className="text-sm font-medium">{profile?.full_name}</span>
             </div>

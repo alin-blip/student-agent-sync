@@ -45,6 +45,11 @@ import LearnPage from "./pages/shared/LearnPage";
 import NotFound from "./pages/NotFound";
 import { IdleTimeoutDialog } from "./components/IdleTimeoutDialog";
 
+// Phase 1 B2B Imports
+import CompaniesPage from "./pages/owner/CompaniesPage";
+import CompanyDetailPage from "./pages/owner/CompanyDetailPage";
+import BranchDetailPage from "./pages/owner/BranchDetailPage";
+
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -90,6 +95,11 @@ const App = () => (
             <Route path="/owner/universities" element={<UniversitiesCoursesPage />} />
             <Route path="/owner/leaderboard" element={<LeaderboardPage />} />
             
+            {/* Phase 1 B2B Routes */}
+            <Route path="/owner/companies" element={<CompaniesPage />} />
+            <Route path="/owner/companies/:id" element={<CompanyDetailPage />} />
+            <Route path="/owner/branches/:id" element={<BranchDetailPage />} />
+
             <Route path="/owner/feedback" element={<FeedbackPage />} />
             <Route path="/owner/audit-log" element={<AuditLogPage />} />
             

@@ -23,6 +23,7 @@ import {
   Shield,
   Receipt,
   Rocket,
+  Building2,
 } from "lucide-react";
 import { FeedbackDialog } from "@/components/FeedbackDialog";
 import { NavLink } from "@/components/NavLink";
@@ -43,6 +44,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
 import { SidebarXPWidget } from "@/components/SidebarXPWidget";
+import { APP_ROLES, getRolePrefix } from "@/lib/roles";
 
 type NavItem = { title: string; url: string; icon: React.ElementType; badge?: number; badgeText?: string };
 
@@ -90,7 +92,7 @@ export function AppSidebar() {
   const { user, role, profile, signOut } = useAuth();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = getRolePrefix(role || APP_ROLES.CONSULTANT);
 
   // Unread messages count
   const { data: unreadCount = 0 } = useQuery({
@@ -126,7 +128,7 @@ export function AppSidebar() {
         .select("id", { count: "exact", head: true })
         .neq("status", "done");
       // Agents only see their own tasks
-      if (role === "agent") {
+      if (role === APP_ROLES.CONSULTANT) {
         query = query.or(`assigned_to.eq.${user.id},created_by.eq.${user.id}`);
       }
       const { count, error } = await query;
@@ -146,7 +148,7 @@ export function AppSidebar() {
         .from("leads")
         .select("id", { count: "exact", head: true })
         .eq("status", "new");
-      if (role === "agent") {
+      if (role === APP_ROLES.CONSULTANT) {
         query = query.eq("agent_id", user.id);
       }
       const { count, error } = await query;
@@ -169,7 +171,6 @@ export function AppSidebar() {
     { title: "Universities", url: `${prefix}/universities`, icon: School },
   ];
 
-
   const actionItems: NavItem[] = [
     { title: "Enroll Student", url: `${prefix}/enroll`, icon: UserPlus },
     { title: "Social Posts", url: `${prefix}/social-posts`, icon: Share2 },
@@ -178,19 +179,33 @@ export function AppSidebar() {
     { title: "Resources", url: `${prefix}/resources`, icon: FolderOpen },
   ];
 
-  const managementItems: NavItem[] = role === "owner" ? [
-    { title: "Agents", url: "/owner/agents", icon: UserCog },
-    { title: "Commissions", url: "/owner/commissions", icon: PoundSterling },
-    { title: "Knowledge Base", url: "/owner/knowledge-base", icon: Brain },
-    { title: "AI Monitoring", url: "/owner/ai-monitoring", icon: MessageSquare },
-    { title: "Feedback", url: "/owner/feedback", icon: MessageSquareHeart },
-    { title: "Audit Log", url: "/owner/audit-log", icon: Shield },
-    { title: "Settings", url: "/owner/settings", icon: Settings },
-  ] : [];
+  const managementItems: NavItem[] = [];
 
-  const teamItems: NavItem[] = role === "admin" ? [
-    { title: "My Agents", url: "/admin/agents", icon: UserCog },
-  ] : [];
+  if (role === APP_ROLES.SUPER_ADMIN) {
+    managementItems.push(
+      { title: "Companies", url: `/owner/companies`, icon: Building2 },
+      { title: "Users", url: `/owner/agents`, icon: UserCog },
+      { title: "Commissions", url: `/owner/commissions`, icon: PoundSterling },
+      { title: "Knowledge Base", url: `/owner/knowledge-base`, icon: Brain },
+      { title: "AI Monitoring", url: `/owner/ai-monitoring`, icon: MessageSquare },
+      { title: "Feedback", url: `/owner/feedback`, icon: MessageSquareHeart },
+      { title: "Audit Log", url: `/owner/audit-log`, icon: Shield },
+      { title: "Settings", url: `/owner/settings`, icon: Settings },
+    );
+  } else if (role === APP_ROLES.BRANCH_MANAGER) {
+    managementItems.push(
+      { title: "My Consultants", url: `/admin/agents`, icon: UserCog },
+    );
+  } else if (role === APP_ROLES.COMPANY_ADMIN) {
+    // Company Admin specific items
+    managementItems.push(
+      { title: "My Company", url: `/company/dashboard`, icon: Building2 },
+      { title: "Branches", url: `/company/branches`, icon: FolderOpen },
+      { title: "Users", url: `/company/users`, icon: UserCog },
+      { title: "Payments", url: `/company/payments`, icon: PoundSterling },
+      { title: "Email Generator", url: `/company/email-generator`, icon: Mail },
+    );
+  }
 
   return (
     <Sidebar collapsible="icon" className="border-r-0" data-onboarding="step-sidebar">
@@ -208,7 +223,6 @@ export function AppSidebar() {
         <SidebarNavGroup label="Main" items={mainItems} collapsed={collapsed} />
         <SidebarNavGroup label="Actions" items={actionItems} collapsed={collapsed} />
         <SidebarNavGroup label="Management" items={managementItems} collapsed={collapsed} />
-        <SidebarNavGroup label="Team" items={teamItems} collapsed={collapsed} />
         {/* XP Widget */}
         <SidebarGroup>
           <SidebarGroupContent>

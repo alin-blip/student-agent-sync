@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState, ReactNode } from "react
 import { Session, User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Enums } from "@/integrations/supabase/types";
+import { APP_ROLES } from "@/lib/roles";
 
 type AppRole = Enums<"app_role">;
 
@@ -9,7 +10,14 @@ interface AuthContextType {
   session: Session | null;
   user: User | null;
   role: AppRole | null;
-  profile: { full_name: string; email: string; phone: string | null; avatar_url: string | null } | null;
+  profile: { 
+    full_name: string; 
+    email: string; 
+    phone: string | null; 
+    avatar_url: string | null; 
+    company_id: string | null; 
+    branch_id: string | null; 
+  } | null;
   loading: boolean;
   signOut: () => Promise<void>;
 }
@@ -35,7 +43,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const fetchRoleAndProfile = async (userId: string) => {
     const [roleRes, profileRes] = await Promise.all([
       supabase.rpc("get_user_role", { _user_id: userId }),
-      supabase.from("profiles").select("full_name, email, phone, avatar_url").eq("id", userId).single(),
+      supabase.from("profiles").select("full_name, email, phone, avatar_url, company_id, branch_id").eq("id", userId).single(),
     ]);
     if (roleRes.data) setRole(roleRes.data as AppRole);
     if (profileRes.data) setProfile(profileRes.data);
