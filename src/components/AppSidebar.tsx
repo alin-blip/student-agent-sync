@@ -191,6 +191,7 @@ export function AppSidebar() {
       { title: "Feedback", url: `/owner/feedback`, icon: MessageSquareHeart },
       { title: "Audit Log", url: `/owner/audit-log`, icon: Shield },
       { title: "Settings", url: `/owner/settings`, icon: Settings },
+      { title: "Embed Manager", url: `/owner/embed-manager`, icon: Share2 },
     );
   } else if (role === APP_ROLES.BRANCH_MANAGER) {
     managementItems.push(
@@ -204,6 +205,7 @@ export function AppSidebar() {
       { title: "Users", url: `/company/users`, icon: UserCog },
       { title: "Payments", url: `/company/payments`, icon: PoundSterling },
       { title: "Email Generator", url: `/company/email-generator`, icon: Mail },
+      { title: "Embed Manager", url: `/company/embed-manager`, icon: Share2 },
     );
   }
 

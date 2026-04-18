@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Index from "./pages/Index";
 import AgentCardPage from "./pages/public/AgentCardPage";
+import BranchCardPage from "./pages/public/BranchCardPage";
+import WidgetPage from "./pages/public/WidgetPage";
 import PublicApplicationPage from "./pages/public/PublicApplicationPage";
 import SignConsentPage from "./pages/public/SignConsentPage";
 import UploadDocumentsPage from "./pages/public/UploadDocumentsPage";
@@ -38,6 +40,7 @@ import DigitalCardPage from "./pages/shared/DigitalCardPage";
 import SocialPostsPage from "./pages/shared/SocialPostsPage";
 import AgentSocialFeedPage from "./pages/shared/AgentSocialFeedPage";
 import UniversitiesCoursesPage from "./pages/shared/UniversitiesCoursesPage";
+import EmbedManagerPage from "./pages/shared/EmbedManagerPage";
 
 import FeedbackPage from "./pages/owner/FeedbackPage";
 import AuditLogPage from "./pages/owner/AuditLogPage";
@@ -68,6 +71,8 @@ const App = () => (
             <Route path="/login" element={<Login />} />
             <Route path="/reset-password" element={<ResetPassword />} />
             <Route path="/card/:slug" element={<AgentCardPage />} />
+            <Route path="/branch-card/:slug" element={<BranchCardPage />} />
+            <Route path="/widget/:branchSlug" element={<WidgetPage />} />
             <Route path="/apply/:slug" element={<PublicApplicationPage />} />
             <Route path="/unsubscribe" element={<UnsubscribePage />} />
             <Route path="/sign-consent/:token" element={<SignConsentPage />} />
@@ -97,6 +102,7 @@ const App = () => (
             <Route path="/owner/social-posts" element={<SocialPostsPage />} />
             <Route path="/owner/universities" element={<UniversitiesCoursesPage />} />
             <Route path="/owner/leaderboard" element={<LeaderboardPage />} />
+            <Route path="/owner/embed-manager" element={<EmbedManagerPage />} />
             
             {/* Phase 1 B2B Routes */}
             <Route path="/owner/companies" element={<CompaniesPage />} />
@@ -110,6 +116,7 @@ const App = () => (
             <Route path="/company/dashboard" element={<CompanyDashboard />} />
             <Route path="/company/branches/:branchId" element={<CompanyBranchDetailPage />} />
             <Route path="/company/branches/new" element={<CompanyBranchCreatePage />} />
+            <Route path="/company/embed-manager" element={<EmbedManagerPage />} />
 
             {/* Admin routes */}
             <Route path="/admin/dashboard" element={<BranchDashboard />} />
