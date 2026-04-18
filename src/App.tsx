@@ -41,6 +41,9 @@ import SocialPostsPage from "./pages/shared/SocialPostsPage";
 import AgentSocialFeedPage from "./pages/shared/AgentSocialFeedPage";
 import UniversitiesCoursesPage from "./pages/shared/UniversitiesCoursesPage";
 import EmbedManagerPage from "./pages/shared/EmbedManagerPage";
+import ForBusinessPage from "./pages/public/ForBusinessPage";
+import ApplyPartnerPage from "./pages/public/ApplyPartnerPage";
+import ThankYouPage from "./pages/public/ThankYouPage";
 
 import FeedbackPage from "./pages/owner/FeedbackPage";
 import AuditLogPage from "./pages/owner/AuditLogPage";
@@ -55,6 +58,7 @@ import { IdleTimeoutDialog } from "./components/IdleTimeoutDialog";
 import CompaniesPage from "./pages/owner/CompaniesPage";
 import CompanyDetailPage from "./pages/owner/CompanyDetailPage";
 import BranchDetailPage from "./pages/owner/BranchDetailPage";
+import CompanyApplicationsPage from "./pages/owner/CompanyApplicationsPage";
 
 const queryClient = new QueryClient();
 
@@ -77,6 +81,9 @@ const App = () => (
             <Route path="/unsubscribe" element={<UnsubscribePage />} />
             <Route path="/sign-consent/:token" element={<SignConsentPage />} />
             <Route path="/upload-documents/:token" element={<UploadDocumentsPage />} />
+            <Route path="/for-business" element={<ForBusinessPage />} />
+            <Route path="/apply-partner" element={<ApplyPartnerPage />} />
+            <Route path="/apply-partner/thank-you" element={<ThankYouPage />} />
             
             {/* Owner routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />
@@ -111,6 +118,7 @@ const App = () => (
 
             <Route path="/owner/feedback" element={<FeedbackPage />} />
             <Route path="/owner/audit-log" element={<AuditLogPage />} />
+            <Route path="/owner/company-applications" element={<CompanyApplicationsPage />} />
             
                         {/* Company Admin routes */}
             <Route path="/company/dashboard" element={<CompanyDashboard />} />

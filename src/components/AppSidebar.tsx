@@ -184,6 +184,7 @@ export function AppSidebar() {
   if (role === APP_ROLES.SUPER_ADMIN) {
     managementItems.push(
       { title: "Companies", url: `/owner/companies`, icon: Building2 },
+      { title: "Applications", url: `/owner/company-applications`, icon: ListTodo },
       { title: "Users", url: `/owner/agents`, icon: UserCog },
       { title: "Commissions", url: `/owner/commissions`, icon: PoundSterling },
       { title: "Knowledge Base", url: `/owner/knowledge-base`, icon: Brain },
