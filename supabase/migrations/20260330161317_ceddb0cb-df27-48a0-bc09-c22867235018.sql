@@ -1,0 +1,1 @@
+ALTER TABLE public.agent_card_settings ADD COLUMN ai_voice_enabled boolean NOT NULL DEFAULT false;

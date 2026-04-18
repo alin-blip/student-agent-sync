@@ -1,0 +1,1 @@
+ALTER TABLE public.university_commissions ADD COLUMN tier_id uuid REFERENCES public.commission_tiers(id) ON DELETE SET NULL;

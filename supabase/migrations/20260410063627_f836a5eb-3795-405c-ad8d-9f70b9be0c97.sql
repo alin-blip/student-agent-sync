@@ -1,0 +1,1 @@
+DELETE FROM resources WHERE id IN ('ce774607-7f44-489a-be0c-92c1cd999a6f', '1b164fe0-47b5-4933-9aea-6622d496a0da');

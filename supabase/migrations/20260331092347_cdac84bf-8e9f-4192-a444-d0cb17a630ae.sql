@@ -1,0 +1,1 @@
+ALTER TABLE public.profiles ADD COLUMN postcode VARCHAR(10), ADD COLUMN address TEXT;

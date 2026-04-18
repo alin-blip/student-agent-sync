@@ -1,0 +1,2 @@
+UPDATE promotions SET title = '5 Offers - £500 Bonus!', description = 'Earn £500 in your account by April 30 if you enrol 5 students' WHERE id = '9825d9e7-a4bc-4d00-87e0-55648456cac9';
+UPDATE promotions SET title = '£1000 Team Bonus', description = 'Get 20 Offers in your team by 30/04/2026 and earn a £1000 Bonus!' WHERE id = '0fe400a7-115a-4f22-ae99-04dba2ee4253';

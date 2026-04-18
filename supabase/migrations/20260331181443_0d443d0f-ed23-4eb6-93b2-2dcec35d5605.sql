@@ -1,0 +1,2 @@
+
+ALTER PUBLICATION supabase_realtime DROP TABLE public.direct_messages;

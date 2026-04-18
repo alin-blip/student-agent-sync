@@ -1,0 +1,1 @@
+ALTER TABLE public.student_notes ADD COLUMN is_urgent boolean NOT NULL DEFAULT false;
