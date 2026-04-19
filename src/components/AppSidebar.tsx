@@ -194,13 +194,12 @@ export function AppSidebar() {
       { title: "Settings", url: `/owner/settings`, icon: Settings },
       { title: "Embed Manager", url: `/owner/embed-manager`, icon: Share2 },
     );
-  } else if (role === APP_ROLES.BRANCH_MANAGER || role === APP_ROLES.LEGACY_ADMIN) {
+  } else if (role === APP_ROLES.BRANCH_MANAGER) {
     managementItems.push(
-      { title: "My Consultants", url: `/admin/agents`, icon: UserCog },
-      { title: "Email Generator", url: `/admin/email-generator`, icon: Mail },
+      { title: "My Consultants", url: `/branch/consultants`, icon: UserCog },
+      { title: "Email Generator", url: `/branch/email-generator`, icon: Mail },
     );
   } else if (role === APP_ROLES.COMPANY_ADMIN) {
-    // Company Admin specific items
     managementItems.push(
       { title: "My Company", url: `/company/dashboard`, icon: Building2 },
       { title: "Branches", url: `/company/branches`, icon: FolderOpen },

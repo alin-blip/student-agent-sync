@@ -77,15 +77,8 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
 
   if (!user) return <Navigate to="/login" replace />;
 
-  // Legacy role aliases: 'admin' ≡ 'branch_manager', 'agent' ≡ 'consultant'
-  const ROLE_ALIASES: Record<string, AppRole> = {
-    admin: "branch_manager",
-    agent: "consultant",
-  };
-  const effectiveRole = (role ? (ROLE_ALIASES[role] ?? role) : null) as AppRole | null;
-
-  if (allowedRoles && effectiveRole && !allowedRoles.includes(effectiveRole)) {
-    return <Navigate to={getHomeRoute(role!)} replace />;
+  if (allowedRoles && role && !allowedRoles.includes(role as AppRole)) {
+    return <Navigate to={getHomeRoute(role)} replace />;
   }
 
   return (
