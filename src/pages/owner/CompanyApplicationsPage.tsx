@@ -68,43 +68,50 @@ export default function CompanyApplicationsPage() {
   const approveApplication = useMutation({
     mutationFn: async (application: any) => {
       // Create Company
-      const { data: companyData, error: companyError } = await supabase.from("companies").insert({
-        name: application.company_name,
-        contact_email: application.email,
-        contact_phone: application.phone,
-        business_type: application.company_type,
-        address: "", // Placeholder
-        city: application.city,
-        postcode: "", // Placeholder
-      }).select().single();
+      const { data: companyData, error: companyError } = await supabase
+        .from("companies")
+        .insert({
+          name: application.company_name,
+          contact_email: application.email,
+          contact_phone: application.phone,
+          business_type: application.company_type,
+          city: application.city,
+        })
+        .select()
+        .single();
       if (companyError) throw companyError;
 
-      // Create Company Admin profile
-      const { data: profileData, error: profileError } = await supabase.from("profiles").insert({
-        full_name: application.contact_name,
-        email: application.email,
-        role: APP_ROLES.COMPANY_ADMIN,
-        company_id: companyData.id,
-        // password will be set by user via reset password flow
-      }).select().single();
-      if (profileError) throw profileError;
+      // Create the Company Admin user via edge function (creates auth user + profile + role)
+      const { data: createdUser, error: createUserError } = await supabase.functions.invoke("create-owner", {
+        body: {
+          email: application.email,
+          full_name: application.contact_name,
+          role: APP_ROLES.COMPANY_ADMIN,
+          company_id: companyData.id,
+        },
+      });
+      if (createUserError) throw createUserError;
+
+      const newUserId = createdUser?.user_id ?? null;
 
       // Create default Branch
-      const { data: branchData, error: branchError } = await supabase.from("branches").insert({
-        company_id: companyData.id,
-        name: `${application.company_name} Main Branch`,
-        address: application.city || "",
-        city: application.city || "",
-        postcode: "",
-        manager_id: profileData.id,
-        slug: `${application.company_name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-main`,
-      }).select().single();
+      const { data: branchData, error: branchError } = await supabase
+        .from("branches")
+        .insert({
+          company_id: companyData.id,
+          name: `${application.company_name} Main Branch`,
+          city: application.city || "",
+          branch_manager_id: newUserId,
+          slug: `${application.company_name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-main`,
+        })
+        .select()
+        .single();
       if (branchError) throw branchError;
 
       // Update application status to approved
       await updateApplicationStatus.mutateAsync({ id: application.id, status: "approved" });
 
-      return { companyData, profileData, branchData };
+      return { companyData, branchData };
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["companyApplications"] });

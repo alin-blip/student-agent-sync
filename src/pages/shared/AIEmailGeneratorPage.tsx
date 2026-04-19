@@ -49,14 +49,17 @@ export default function AIEmailGeneratorPage() {
   });
 
   const { data: courses } = useQuery({
-    queryKey: ["courses", selectedCampus],
+    queryKey: ["courses", selectedUniversity],
     queryFn: async () => {
-      if (!selectedCampus) return [];
-      const { data, error } = await supabase.from("courses").select("id, name, description, duration, timetable").eq("campus_id", selectedCampus);
+      if (!selectedUniversity) return [];
+      const { data, error } = await supabase
+        .from("courses")
+        .select("id, name, description, duration, timetable")
+        .eq("university_id", selectedUniversity);
       if (error) throw error;
       return data;
     },
-    enabled: !!selectedCampus,
+    enabled: !!selectedCampus && !!selectedUniversity,
   });
 
   const { data: emailHistory } = useQuery({
@@ -88,7 +91,7 @@ export default function AIEmailGeneratorPage() {
         throw new Error("Course details not found.");
       }
 
-      const { data: profileData, error: profileError } = await supabase.from("profiles").select("full_name").eq("id", user?.id).single();
+      const { data: profileData, error: profileError } = await supabase.from("profiles").select("full_name, slug").eq("id", user?.id).single();
       if (profileError) throw profileError;
 
       let applyLink = "";
@@ -101,9 +104,9 @@ export default function AIEmailGeneratorPage() {
         const { data: currentBranch, error: branchError } = await supabase.from("branches").select("slug").eq("id", branchId).single();
         if (branchError) console.error("Error fetching current branch for link:", branchError);
         applyLink = currentBranch ? `https://partners.eduforyou.co.uk/branch-card/${currentBranch.slug}` : "https://partners.eduforyou.co.uk/apply-partner";
-      } else if (role === APP_ROLES.CONSULTANT) {
+      } else if (role === APP_ROLES.CONSULTANT || role === APP_ROLES.LEGACY_AGENT) {
         // Assuming consultant has a digital card
-        applyLink = `https://partners.eduforyou.co.uk/card/${profileData.slug}`;
+        applyLink = `https://partners.eduforyou.co.uk/card/${profileData?.slug ?? ""}`;
       }
 
       const { data, error } = await supabase.functions.invoke("generate-email-sequence", {

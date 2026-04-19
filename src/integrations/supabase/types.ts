@@ -509,12 +509,15 @@ export type Database = {
           contact_person: string | null
           contact_phone: string | null
           created_at: string
+          description: string | null
           id: string
           is_active: boolean
+          logo_url: string | null
           name: string
           postcode: string | null
           slug: string | null
           updated_at: string
+          website: string | null
         }
         Insert: {
           address?: string | null
@@ -525,12 +528,15 @@ export type Database = {
           contact_person?: string | null
           contact_phone?: string | null
           created_at?: string
+          description?: string | null
           id?: string
           is_active?: boolean
+          logo_url?: string | null
           name: string
           postcode?: string | null
           slug?: string | null
           updated_at?: string
+          website?: string | null
         }
         Update: {
           address?: string | null
@@ -541,12 +547,15 @@ export type Database = {
           contact_person?: string | null
           contact_phone?: string | null
           created_at?: string
+          description?: string | null
           id?: string
           is_active?: boolean
+          logo_url?: string | null
           name?: string
           postcode?: string | null
           slug?: string | null
           updated_at?: string
+          website?: string | null
         }
         Relationships: [
           {
@@ -1375,6 +1384,7 @@ export type Database = {
       courses: {
         Row: {
           created_at: string
+          description: string | null
           duration: string | null
           fees: string | null
           id: string
@@ -1382,11 +1392,13 @@ export type Database = {
           level: string
           name: string
           study_mode: string
+          timetable: string | null
           tuition_fee_percentage: number | null
           university_id: string
         }
         Insert: {
           created_at?: string
+          description?: string | null
           duration?: string | null
           fees?: string | null
           id?: string
@@ -1394,11 +1406,13 @@ export type Database = {
           level?: string
           name: string
           study_mode?: string
+          timetable?: string | null
           tuition_fee_percentage?: number | null
           university_id: string
         }
         Update: {
           created_at?: string
+          description?: string | null
           duration?: string | null
           fees?: string | null
           id?: string
@@ -1406,6 +1420,7 @@ export type Database = {
           level?: string
           name?: string
           study_mode?: string
+          timetable?: string | null
           tuition_fee_percentage?: number | null
           university_id?: string
         }
@@ -3620,7 +3635,13 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "owner" | "admin" | "agent" | "company_admin" | "branch_manager"
+      app_role:
+        | "owner"
+        | "admin"
+        | "agent"
+        | "company_admin"
+        | "branch_manager"
+        | "consultant"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -3748,7 +3769,14 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["owner", "admin", "agent", "company_admin", "branch_manager"],
+      app_role: [
+        "owner",
+        "admin",
+        "agent",
+        "company_admin",
+        "branch_manager",
+        "consultant",
+      ],
     },
   },
 } as const

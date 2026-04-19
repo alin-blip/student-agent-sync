@@ -1,20 +1,33 @@
+// Maps human-friendly role keys → DB enum values stored in user_roles.role
 export const APP_ROLES = {
   SUPER_ADMIN: "owner",
   COMPANY_ADMIN: "company_admin",
-  BRANCH_MANAGER: "admin", // Refactored from 'admin'
-  CONSULTANT: "agent",     // Refactored from 'agent'
+  BRANCH_MANAGER: "branch_manager",
+  CONSULTANT: "consultant",
+  // Legacy aliases — preserved for backward compatibility with existing users
+  LEGACY_ADMIN: "admin",
+  LEGACY_AGENT: "agent",
+} as const;
+
+export type AppRole =
+  | "owner"
+  | "company_admin"
+  | "branch_manager"
+  | "consultant"
+  | "admin"
+  | "agent";
+
+export const ROLE_PREFIXES: Record<AppRole, string> = {
+  owner: "owner",
+  company_admin: "company",
+  branch_manager: "branch",
+  consultant: "agent",
+  admin: "admin",
+  agent: "agent",
 };
 
-export const ROLE_PREFIXES = {
-  [APP_ROLES.SUPER_ADMIN]: "owner",
-  [APP_ROLES.COMPANY_ADMIN]: "company",
-  [APP_ROLES.BRANCH_MANAGER]: "admin",
-  [APP_ROLES.CONSULTANT]: "agent",
-};
-
-export const getRolePrefix = (role: string) => {
-  return ROLE_PREFIXES[role as keyof typeof ROLE_PREFIXES] || "";
-};
+export const getRolePrefix = (role: string): string =>
+  ROLE_PREFIXES[role as AppRole] ?? "";
 
 export const getHomeRoute = (role: string) => {
   const prefix = getRolePrefix(role);
@@ -23,14 +36,18 @@ export const getHomeRoute = (role: string) => {
 
 export const getRoleLabel = (role: string) => {
   switch (role) {
-    case APP_ROLES.SUPER_ADMIN:
+    case "owner":
       return "Super Admin";
-    case APP_ROLES.COMPANY_ADMIN:
+    case "company_admin":
       return "Company Admin";
-    case APP_ROLES.BRANCH_MANAGER:
+    case "branch_manager":
       return "Branch Manager";
-    case APP_ROLES.CONSULTANT:
+    case "consultant":
       return "Consultant";
+    case "admin":
+      return "Admin";
+    case "agent":
+      return "Agent";
     default:
       return role;
   }

@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Users } from "lucide-react";
 
 export default function BranchDashboard() {
   const { user, branchId } = useAuth();
@@ -24,7 +24,11 @@ export default function BranchDashboard() {
   const { data: consultants, isLoading: isLoadingConsultants, error: consultantsError } = useQuery({
     queryKey: ["branchConsultants", branchId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("profiles").select("*").eq("branch_id", branchId).eq("role", APP_ROLES.CONSULTANT);
+      if (!branchId) return [];
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("branch_id", branchId);
       if (error) throw error;
       return data;
     },

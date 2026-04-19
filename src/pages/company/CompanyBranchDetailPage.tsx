@@ -36,7 +36,11 @@ export default function CompanyBranchDetailPage() {
   const { data: consultants, isLoading: isLoadingConsultants, error: consultantsError } = useQuery({
     queryKey: ["branchConsultants", branchId],
     queryFn: async () => {
-      const { data, error } = await supabase.from("profiles").select("*").eq("branch_id", branchId).eq("role", APP_ROLES.CONSULTANT);
+      if (!branchId) return [];
+      const { data, error } = await supabase
+        .from("profiles")
+        .select("*")
+        .eq("branch_id", branchId);
       if (error) throw error;
       return data;
     },
