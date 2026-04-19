@@ -95,7 +95,7 @@ export function StudentDocumentsTab({ student, canEdit }: Props) {
       const { data } = await supabase.from("student_documents").select("*").eq("student_id", student.id).not("cancelled_at" as any, "is", null).order("cancelled_at" as any, { ascending: false });
       return data || [];
     },
-    enabled: role === "owner" || role === "admin",
+    enabled: role === "owner" || role === "branch_manager",
   });
 
   const handleRestoreDoc = async (doc: any) => {
@@ -236,9 +236,9 @@ export function StudentDocumentsTab({ student, canEdit }: Props) {
 
   const handleDeleteDoc = async (doc: any) => {
     // Agents cannot cancel or delete documents
-    if (role === "agent") return;
+    if (role === "consultant") return;
 
-    if (role === "admin") {
+    if (role === "branch_manager") {
       // Admin needs code from owner
       setDeleteTarget(doc);
       setDeleteCodeDialogOpen(true);
@@ -668,7 +668,7 @@ export function StudentDocumentsTab({ student, canEdit }: Props) {
                   </div>
                   <div className="flex gap-1 items-center">
                     <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDownload(doc)}><Download className="w-3.5 h-3.5" /></Button>
-                    {canEdit && (role === "owner" || role === "admin") && (
+                    {canEdit && (role === "owner" || role === "branch_manager") && (
                       <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => handleDeleteDoc(doc)}>
                         <Trash2 className="w-3.5 h-3.5 text-destructive" />
                       </Button>
@@ -682,7 +682,7 @@ export function StudentDocumentsTab({ student, canEdit }: Props) {
       </Card>
 
       {/* Cancelled Documents Section — owner/admin only */}
-      {(role === "owner" || role === "admin") && cancelledDocs.length > 0 && (
+      {(role === "owner" || role === "branch_manager") && cancelledDocs.length > 0 && (
         <Card className="border-orange-200 bg-orange-50/30">
           <CardHeader className="pb-3">
             <CardTitle className="text-base flex items-center gap-2 text-orange-700">

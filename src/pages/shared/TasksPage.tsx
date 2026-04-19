@@ -53,8 +53,8 @@ export default function TasksPage() {
   const { user, role } = useAuth();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const canManage = role === "owner" || role === "admin";
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const canManage = role === "owner" || role === "branch_manager";
+  const prefix = role === "owner" ? "/owner" : role === "branch_manager" ? "/branch" : "/consultant";
 
   const [createOpen, setCreateOpen] = useState(false);
   const [editTask, setEditTask] = useState<Task | null>(null);

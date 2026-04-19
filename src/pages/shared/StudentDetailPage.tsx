@@ -20,7 +20,7 @@ export default function StudentDetailPage() {
   const { id } = useParams<{ id: string }>();
   const { role, user } = useAuth();
   const navigate = useNavigate();
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = role === "owner" ? "/owner" : role === "branch_manager" ? "/branch" : "/consultant";
 
   const { data: student, isLoading } = useQuery({
     queryKey: ["student-detail", id],
@@ -87,9 +87,9 @@ export default function StudentDetailPage() {
     return <DashboardLayout><div className="flex items-center justify-center py-20 text-muted-foreground">Student not found</div></DashboardLayout>;
   }
 
-  const isAgentLocked = role === "agent" && hasLockedEnrollment === true;
-  const canEdit = !isAgentLocked && (role === "owner" || role === "admin" || (role === "agent" && student.agent_id === user?.id));
-  const canChangeStatus = role === "owner" || role === "admin";
+  const isAgentLocked = role === "consultant" && hasLockedEnrollment === true;
+  const canEdit = !isAgentLocked && (role === "owner" || role === "branch_manager" || (role === "consultant" && student.agent_id === user?.id));
+  const canChangeStatus = role === "owner" || role === "branch_manager";
 
   return (
     <DashboardLayout>

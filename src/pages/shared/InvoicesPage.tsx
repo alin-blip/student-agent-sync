@@ -30,7 +30,7 @@ export default function InvoicesPage() {
   const { toast } = useToast();
   const qc = useQueryClient();
   const navigate = useNavigate();
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = role === "owner" ? "/owner" : role === "branch_manager" ? "/branch" : "/consultant";
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedSnapshot, setSelectedSnapshot] = useState("");
   const [notes, setNotes] = useState("");

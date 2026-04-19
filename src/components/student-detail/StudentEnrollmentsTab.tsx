@@ -212,7 +212,7 @@ export function StudentEnrollmentsTab({ studentId, canChangeStatus }: Props) {
 
       setTransferRequestId(data.transfer_request_id);
       setTransferStep("code");
-      const approverLabel = role === "agent" ? "admin" : "owner";
+      const approverLabel = role === "consultant" ? "admin" : "owner";
       toast({ title: "Code sent", description: `Approval code sent to your ${approverLabel}. Enter it below.` });
     } catch (err: any) {
       toast({ title: "Error", description: err.message, variant: "destructive" });
@@ -257,7 +257,7 @@ export function StudentEnrollmentsTab({ studentId, canChangeStatus }: Props) {
   const getAvailableStatuses = (currentStatus: string) => {
     if (!hasSignedConsent) return ["new_application"];
     if (role === "owner") return getVisibleStatuses("owner");
-    if (role === "admin") return getAdminEditableStatuses();
+    if (role === "branch_manager") return getAdminEditableStatuses();
     return []; // agents don't use dropdown
   };
 
@@ -347,7 +347,7 @@ export function StudentEnrollmentsTab({ studentId, canChangeStatus }: Props) {
                       <TableCell>
                         {isTransferred ? (
                           <StatusBadge status="transferred" />
-                        ) : role === "agent" ? (
+                        ) : role === "consultant" ? (
                           <div className="flex flex-col gap-1">
                             <div className="flex items-center gap-1 flex-wrap">
                               <StatusBadge status={getDisplayStatus(e.status, role)} />
@@ -448,7 +448,7 @@ export function StudentEnrollmentsTab({ studentId, canChangeStatus }: Props) {
                 <Alert>
                   <AlertTriangle className="h-4 w-4" />
                   <AlertDescription className="text-sm">
-                    {role === "agent"
+                    {role === "consultant"
                       ? "An approval code will be sent to your admin. You'll need to enter it to confirm."
                       : "An approval code will be sent to the owner. You'll need to enter it to confirm."}
                   </AlertDescription>
@@ -527,7 +527,7 @@ export function StudentEnrollmentsTab({ studentId, canChangeStatus }: Props) {
           {transferEnrollment && transferStep === "code" && (
             <div className="space-y-4">
               <p className="text-sm text-muted-foreground">
-                An approval code has been sent to your {role === "agent" ? "admin" : "owner"}. Enter the code below to complete the transfer.
+                An approval code has been sent to your {role === "consultant" ? "admin" : "owner"}. Enter the code below to complete the transfer.
               </p>
 
               <div>

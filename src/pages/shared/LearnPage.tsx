@@ -77,7 +77,7 @@ function getIconComponent(name: string | null) {
 export default function LearnPage() {
   const { user, role } = useAuth();
   const qc = useQueryClient();
-  const canManage = role === "owner" || role === "admin";
+  const canManage = role === "owner" || role === "branch_manager";
 
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
   const [playerOpen, setPlayerOpen] = useState(false);

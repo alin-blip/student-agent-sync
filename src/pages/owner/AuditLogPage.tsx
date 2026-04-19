@@ -39,7 +39,7 @@ export default function AuditLogPage() {
       const { data } = await query;
       return data || [];
     },
-    enabled: role === "owner" || role === "admin",
+    enabled: role === "owner" || role === "branch_manager",
   });
 
   // Fetch profiles for user names
@@ -77,7 +77,7 @@ export default function AuditLogPage() {
     return changes;
   };
 
-  if (role !== "owner" && role !== "admin") {
+  if (role !== "owner" && role !== "branch_manager") {
     return <DashboardLayout><div className="text-center text-muted-foreground py-20">Access denied</div></DashboardLayout>;
   }
 

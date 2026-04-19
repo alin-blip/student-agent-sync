@@ -285,7 +285,7 @@ export default function UniversitiesCoursesPage() {
               className="pl-9"
             />
           </div>
-          {(role === "owner" || role === "admin") && (
+          {(role === "owner" || role === "branch_manager") && (
             <div className="flex items-center gap-2">
               <Filter className="h-4 w-4 text-muted-foreground" />
               <Switch
@@ -298,7 +298,7 @@ export default function UniversitiesCoursesPage() {
               </Label>
             </div>
           )}
-           {(role === "owner" || role === "admin") && effectiveUniId && effectiveUniId !== "all" && (() => {
+           {(role === "owner" || role === "branch_manager") && effectiveUniId && effectiveUniId !== "all" && (() => {
             const uni = displayUniversities.find((u: any) => u.id === effectiveUniId);
             const uniName = uni?.name || "";
             const hasUrl = !!getUniversityUrl(uniName);

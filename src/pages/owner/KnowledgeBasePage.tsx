@@ -151,7 +151,7 @@ export default function KnowledgeBasePage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
-  const canManage = role === "owner" || role === "admin";
+  const canManage = role === "owner" || role === "branch_manager";
 
   const openEdit = (entry: KBEntry) => {
     setEditId(entry.id);
