@@ -9,6 +9,7 @@ interface AddressLookupInputProps {
   address: string;
   onPostcodeChange: (postcode: string) => void;
   onAddressChange: (address: string) => void;
+  onCityChange?: (city: string) => void;
 }
 
 interface PostcodeSuggestion {
@@ -24,6 +25,7 @@ export function AddressLookupInput({
   address,
   onPostcodeChange,
   onAddressChange,
+  onCityChange,
 }: AddressLookupInputProps) {
   const [loading, setLoading] = useState(false);
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -86,6 +88,9 @@ export function AddressLookupInput({
         const parts = [r.admin_ward, r.admin_district, r.region || r.country, r.postcode].filter(Boolean);
         onPostcodeChange(r.postcode);
         onAddressChange(parts.join(", "));
+        if (onCityChange) {
+          onCityChange(r.admin_district || r.admin_ward || "");
+        }
       } else {
         setError("Could not resolve this postcode.");
       }
