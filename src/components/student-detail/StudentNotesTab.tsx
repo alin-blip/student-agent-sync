@@ -41,7 +41,7 @@ async function sendNoteEmailToAgent(studentId: string, studentName: string, note
     const { data: agent } = await supabase.from("profiles").select("email").eq("id", student.agent_id).single();
     if (!agent?.email) return;
     const noteId = crypto.randomUUID();
-    const studentUrl = `${window.location.origin}/agent/students/${studentId}`;
+    const studentUrl = `${window.location.origin}/consultant/students/${studentId}`;
     await supabase.functions.invoke("send-transactional-email", {
       body: {
         templateName: "note-notification",

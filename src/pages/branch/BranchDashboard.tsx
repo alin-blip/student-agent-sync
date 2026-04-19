@@ -62,7 +62,7 @@ export default function BranchDashboard() {
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>Your Consultants</CardTitle>
             <Button asChild size="sm">
-              <Link to="/admin/consultants/new">
+              <Link to="/branch/consultants">
                 <PlusCircle className="mr-2 h-4 w-4" /> Add New Consultant
               </Link>
             </Button>
@@ -78,7 +78,7 @@ export default function BranchDashboard() {
                         <p className="text-sm text-muted-foreground">Email: {consultant.email}</p>
                       </div>
                       <Button variant="outline" size="sm" asChild>
-                        <Link to={`/admin/consultants/${consultant.id}`}>View Consultant</Link>
+                        <Link to={`/branch/consultants`}>View Consultant</Link>
                       </Button>
                     </div>
                   </Card>

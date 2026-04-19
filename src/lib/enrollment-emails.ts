@@ -32,7 +32,7 @@ export async function notifyAgentOfStatusChange(
     const studentName = `${student.first_name} ${student.last_name}`;
     const universityName = (enrollment as any).universities?.name;
     const courseName = (enrollment as any).courses?.name;
-    const studentUrl = `${window.location.origin}/agent/students/${enrollment.student_id}`;
+    const studentUrl = `${window.location.origin}/consultant/students/${enrollment.student_id}`;
 
     await supabase.functions.invoke("send-transactional-email", {
       body: {
