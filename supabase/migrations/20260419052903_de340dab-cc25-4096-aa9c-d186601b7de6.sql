@@ -1,0 +1,2 @@
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'company_admin';
+ALTER TYPE public.app_role ADD VALUE IF NOT EXISTS 'branch_manager';

@@ -449,6 +449,136 @@ export type Database = {
           },
         ]
       }
+      branch_users: {
+        Row: {
+          branch_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          branch_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          branch_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branch_users_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branch_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branch_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branch_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      branches: {
+        Row: {
+          address: string | null
+          branch_manager_id: string | null
+          city: string | null
+          company_id: string
+          contact_email: string | null
+          contact_person: string | null
+          contact_phone: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          name: string
+          postcode: string | null
+          slug: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          branch_manager_id?: string | null
+          city?: string | null
+          company_id: string
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name: string
+          postcode?: string | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          branch_manager_id?: string | null
+          city?: string | null
+          company_id?: string
+          contact_email?: string | null
+          contact_person?: string | null
+          contact_phone?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          name?: string
+          postcode?: string | null
+          slug?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "branches_branch_manager_id_fkey"
+            columns: ["branch_manager_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branches_branch_manager_id_fkey"
+            columns: ["branch_manager_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branches_branch_manager_id_fkey"
+            columns: ["branch_manager_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "branches_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       brand_settings: {
         Row: {
           brand_prompt: string
@@ -686,6 +816,414 @@ export type Database = {
             columns: ["university_id"]
             isOneToOne: false
             referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      companies: {
+        Row: {
+          address: string | null
+          business_type: string | null
+          city: string | null
+          company_admin_id: string | null
+          contact_email: string | null
+          contact_phone: string | null
+          contract_end: string | null
+          contract_start: string | null
+          contract_terms: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          postcode: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          business_type?: string | null
+          city?: string | null
+          company_admin_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contract_end?: string | null
+          contract_start?: string | null
+          contract_terms?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          postcode?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          business_type?: string | null
+          city?: string | null
+          company_admin_id?: string | null
+          contact_email?: string | null
+          contact_phone?: string | null
+          contract_end?: string | null
+          contract_start?: string | null
+          contract_terms?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          postcode?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "companies_company_admin_id_fkey"
+            columns: ["company_admin_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "companies_company_admin_id_fkey"
+            columns: ["company_admin_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "companies_company_admin_id_fkey"
+            columns: ["company_admin_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_applications: {
+        Row: {
+          city: string | null
+          company_name: string
+          company_type: string | null
+          contact_name: string
+          created_at: string
+          email: string
+          how_heard: string | null
+          id: string
+          motivation: string | null
+          network_access: string[] | null
+          network_size: string | null
+          notes: string | null
+          num_employees: string | null
+          num_locations: number | null
+          phone: string | null
+          reviewed_by: string | null
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          city?: string | null
+          company_name: string
+          company_type?: string | null
+          contact_name: string
+          created_at?: string
+          email: string
+          how_heard?: string | null
+          id?: string
+          motivation?: string | null
+          network_access?: string[] | null
+          network_size?: string | null
+          notes?: string | null
+          num_employees?: string | null
+          num_locations?: number | null
+          phone?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          city?: string | null
+          company_name?: string
+          company_type?: string | null
+          contact_name?: string
+          created_at?: string
+          email?: string
+          how_heard?: string | null
+          id?: string
+          motivation?: string | null
+          network_access?: string[] | null
+          network_size?: string | null
+          notes?: string | null
+          num_employees?: string | null
+          num_locations?: number | null
+          phone?: string | null
+          reviewed_by?: string | null
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_applications_reviewed_by_fkey"
+            columns: ["reviewed_by"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_enrollments: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          consultant_id: string | null
+          created_at: string
+          enrollment_id: string
+          id: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          consultant_id?: string | null
+          created_at?: string
+          enrollment_id: string
+          id?: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          consultant_id?: string | null
+          created_at?: string
+          enrollment_id?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_enrollments_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_enrollments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_enrollments_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_enrollments_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_enrollments_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_enrollments_enrollment_id_fkey"
+            columns: ["enrollment_id"]
+            isOneToOne: true
+            referencedRelation: "enrollments"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_leads: {
+        Row: {
+          branch_id: string | null
+          company_id: string
+          consultant_id: string | null
+          created_at: string
+          id: string
+          lead_id: string
+        }
+        Insert: {
+          branch_id?: string | null
+          company_id: string
+          consultant_id?: string | null
+          created_at?: string
+          id?: string
+          lead_id: string
+        }
+        Update: {
+          branch_id?: string | null
+          company_id?: string
+          consultant_id?: string | null
+          created_at?: string
+          id?: string
+          lead_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_leads_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_leads_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_leads_lead_id_fkey"
+            columns: ["lead_id"]
+            isOneToOne: true
+            referencedRelation: "leads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_payments: {
+        Row: {
+          amount: number
+          branch_id: string | null
+          company_id: string
+          created_at: string
+          id: string
+          issued_at: string
+          period_end: string
+          period_start: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          amount: number
+          branch_id?: string | null
+          company_id: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          period_end: string
+          period_start: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          amount?: number
+          branch_id?: string | null
+          company_id?: string
+          created_at?: string
+          id?: string
+          issued_at?: string
+          period_end?: string
+          period_start?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_payments_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_payments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      company_users: {
+        Row: {
+          company_id: string
+          created_at: string
+          id: string
+          user_id: string
+        }
+        Insert: {
+          company_id: string
+          created_at?: string
+          id?: string
+          user_id: string
+        }
+        Update: {
+          company_id?: string
+          created_at?: string
+          id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "company_users_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "company_users_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -1241,6 +1779,108 @@ export type Database = {
         }
         Relationships: []
       }
+      generated_email_sequences: {
+        Row: {
+          audience: string | null
+          branch_id: string | null
+          campus_id: string | null
+          company_id: string | null
+          course_id: string | null
+          created_at: string
+          email_count: number | null
+          emails_json: Json
+          id: string
+          tone: string | null
+          university_id: string | null
+          user_id: string
+        }
+        Insert: {
+          audience?: string | null
+          branch_id?: string | null
+          campus_id?: string | null
+          company_id?: string | null
+          course_id?: string | null
+          created_at?: string
+          email_count?: number | null
+          emails_json: Json
+          id?: string
+          tone?: string | null
+          university_id?: string | null
+          user_id: string
+        }
+        Update: {
+          audience?: string | null
+          branch_id?: string | null
+          campus_id?: string | null
+          company_id?: string | null
+          course_id?: string | null
+          created_at?: string
+          email_count?: number | null
+          emails_json?: Json
+          id?: string
+          tone?: string | null
+          university_id?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "generated_email_sequences_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_campus_id_fkey"
+            columns: ["campus_id"]
+            isOneToOne: false
+            referencedRelation: "campuses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_university_id_fkey"
+            columns: ["university_id"]
+            isOneToOne: false
+            referencedRelation: "universities"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "generated_email_sequences_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       generated_images: {
         Row: {
           created_at: string
@@ -1676,6 +2316,8 @@ export type Database = {
           address: string | null
           admin_id: string | null
           avatar_url: string | null
+          branch_id: string | null
+          company_id: string | null
           created_at: string
           email: string
           full_name: string
@@ -1690,6 +2332,8 @@ export type Database = {
           address?: string | null
           admin_id?: string | null
           avatar_url?: string | null
+          branch_id?: string | null
+          company_id?: string | null
           created_at?: string
           email: string
           full_name: string
@@ -1704,6 +2348,8 @@ export type Database = {
           address?: string | null
           admin_id?: string | null
           avatar_url?: string | null
+          branch_id?: string | null
+          company_id?: string | null
           created_at?: string
           email?: string
           full_name?: string
@@ -1734,6 +2380,20 @@ export type Database = {
             columns: ["admin_id"]
             isOneToOne: false
             referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "profiles_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
             referencedColumns: ["id"]
           },
         ]
@@ -2710,30 +3370,6 @@ export type Database = {
           },
         ]
       }
-      user_passwords: {
-        Row: {
-          id: string
-          password_plaintext: string
-          set_by: string | null
-          updated_at: string
-          user_id: string
-        }
-        Insert: {
-          id?: string
-          password_plaintext: string
-          set_by?: string | null
-          updated_at?: string
-          user_id: string
-        }
-        Update: {
-          id?: string
-          password_plaintext?: string
-          set_by?: string | null
-          updated_at?: string
-          user_id?: string
-        }
-        Relationships: []
-      }
       user_presence: {
         Row: {
           is_online: boolean
@@ -2769,6 +3405,115 @@ export type Database = {
           user_id?: string
         }
         Relationships: []
+      }
+      widget_leads: {
+        Row: {
+          branch_id: string | null
+          consultant_id: string | null
+          created_at: string
+          email: string
+          full_name: string
+          id: string
+          message: string | null
+          origin_domain: string | null
+          phone: string | null
+          status: string
+        }
+        Insert: {
+          branch_id?: string | null
+          consultant_id?: string | null
+          created_at?: string
+          email: string
+          full_name: string
+          id?: string
+          message?: string | null
+          origin_domain?: string | null
+          phone?: string | null
+          status?: string
+        }
+        Update: {
+          branch_id?: string | null
+          consultant_id?: string | null
+          created_at?: string
+          email?: string
+          full_name?: string
+          id?: string
+          message?: string | null
+          origin_domain?: string | null
+          phone?: string | null
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "widget_leads_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: false
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "widget_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "conversation_partner_view"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "widget_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "widget_leads_consultant_id_fkey"
+            columns: ["consultant_id"]
+            isOneToOne: false
+            referencedRelation: "public_agent_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      widget_settings: {
+        Row: {
+          allowed_domains: string[]
+          branch_id: string | null
+          button_color: string
+          created_at: string
+          header_color: string
+          id: string
+          text_color: string
+          updated_at: string
+        }
+        Insert: {
+          allowed_domains?: string[]
+          branch_id?: string | null
+          button_color?: string
+          created_at?: string
+          header_color?: string
+          id?: string
+          text_color?: string
+          updated_at?: string
+        }
+        Update: {
+          allowed_domains?: string[]
+          branch_id?: string | null
+          button_color?: string
+          created_at?: string
+          header_color?: string
+          id?: string
+          text_color?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "widget_settings_branch_id_fkey"
+            columns: ["branch_id"]
+            isOneToOne: true
+            referencedRelation: "branches"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
@@ -2825,6 +3570,8 @@ export type Database = {
         Returns: number
       }
       get_my_admin_id: { Args: never; Returns: string }
+      get_my_branch_id: { Args: never; Returns: string }
+      get_my_company_id: { Args: never; Returns: string }
       get_team_lead_counts: {
         Args: { _admin_id: string }
         Returns: {
@@ -2844,6 +3591,8 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_branch_manager_of: { Args: { _branch_id: string }; Returns: boolean }
+      is_company_admin_of: { Args: { _company_id: string }; Returns: boolean }
       is_post_creator: {
         Args: { _post_id: string; _user_id: string }
         Returns: boolean
@@ -2871,7 +3620,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "owner" | "admin" | "agent"
+      app_role: "owner" | "admin" | "agent" | "company_admin" | "branch_manager"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -2999,7 +3748,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["owner", "admin", "agent"],
+      app_role: ["owner", "admin", "agent", "company_admin", "branch_manager"],
     },
   },
 } as const
