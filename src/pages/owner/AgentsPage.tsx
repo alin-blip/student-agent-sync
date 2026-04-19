@@ -231,7 +231,7 @@ export default function AgentsPage() {
                     )}
                   </TableCell>
                   <TableCell className="hidden md:table-cell">
-                    {presenceMap.has(p.id) ? (
+                    {presenceMap[p.id]?.is_online ? (
                       <Badge variant="success" className="text-xs">Online</Badge>
                     ) : (
                       <Badge variant="outline" className="text-xs">Offline</Badge>

@@ -22,7 +22,7 @@ import { APP_ROLES } from "@/lib/roles";
 
 export default function AdminAgentsPage() {
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, branchId } = useAuth();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [newEmail, setNewEmail] = useState("");
@@ -31,17 +31,18 @@ export default function AdminAgentsPage() {
   const [newAddress, setNewAddress] = useState("");
 
   const { data: consultants = [] } = useQuery({
-    queryKey: ["branch-consultants", user?.id],
+    queryKey: ["branch-consultants", branchId],
     queryFn: async () => {
+      if (!branchId) return [];
+      // Filter by branch_id; role filter happens in user_roles separately
       const { data } = await supabase
         .from("profiles")
         .select("*")
-        .eq("branch_id", user!.branch_id)
-        .eq("role", APP_ROLES.CONSULTANT)
+        .eq("branch_id", branchId)
         .order("created_at", { ascending: false });
       return data || [];
     },
-    enabled: !!user?.branch_id,
+    enabled: !!branchId,
   });
 
   const createConsultant = useMutation({
@@ -51,7 +52,7 @@ export default function AdminAgentsPage() {
           email: newEmail,
           full_name: newName,
           role: APP_ROLES.CONSULTANT,
-          branch_id: user!.branch_id,
+          branch_id: branchId,
           postcode: newPostcode || undefined,
           address: newAddress || undefined,
         },
