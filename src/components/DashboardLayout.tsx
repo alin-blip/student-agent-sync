@@ -7,11 +7,11 @@ import { NotificationBell } from "@/components/NotificationBell";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { PresenceProvider } from "@/contexts/PresenceContext";
-import { getHomeRoute, getRoleLabel, APP_ROLES } from "@/lib/roles";
+import { getHomeRoute, getRoleLabel, type AppRole } from "@/lib/roles";
 
 interface DashboardLayoutProps {
   children: ReactNode;
-  allowedRoles?: Array<keyof typeof APP_ROLES>;
+  allowedRoles?: AppRole[];
 }
 
 export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps) {
@@ -75,7 +75,7 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
   }
 
   if (!user) return <Navigate to="/login" replace />;
-  if (allowedRoles && role && !allowedRoles.includes(role as keyof typeof APP_ROLES)) {
+  if (allowedRoles && role && !allowedRoles.includes(role as AppRole)) {
     return <Navigate to={getHomeRoute(role)} replace />;
   }
 
