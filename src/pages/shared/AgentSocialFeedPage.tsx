@@ -201,7 +201,7 @@ export default function AgentSocialFeedPage() {
                 <p className="text-xs text-muted-foreground">You need a public digital card to share posts with your personal link.</p>
               </div>
               <Button asChild size="sm" variant="outline">
-                <Link to="/agent/digital-card">Create Card</Link>
+                <Link to="/consultant/digital-card">Create Card</Link>
               </Button>
             </CardContent>
           </Card>

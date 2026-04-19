@@ -42,7 +42,7 @@ export function PromoBanner() {
   });
 
   // Only agents and admins see banners
-  const isEligible = role === "agent" || role === "admin";
+  const isEligible = role === "consultant" || role === "branch_manager";
 
   // Fetch active promotion matching user's role
   const { data: promo } = useQuery({
@@ -102,7 +102,7 @@ export function PromoBanner() {
         .eq("admin_id", user!.id);
       return data?.map((a) => a.id) || [];
     },
-    enabled: !!user && role === "admin",
+    enabled: !!user && role === "branch_manager",
   });
 
   // Count qualifying enrollments
@@ -111,7 +111,7 @@ export function PromoBanner() {
     queryFn: async () => {
       if (!user || !agentPromo) return 0;
 
-      if (role === "admin") {
+      if (role === "branch_manager") {
         // Count enrollments from all team agents' students
         const ids = teamAgentIds || [];
         if (ids.length === 0) return 0;
@@ -135,7 +135,7 @@ export function PromoBanner() {
         .lte("created_at", agentPromo.personal_deadline);
       return count || 0;
     },
-    enabled: !!user && !!agentPromo && (role === "agent" || (role === "admin" && !!teamAgentIds)),
+    enabled: !!user && !!agentPromo && (role === "consultant" || (role === "branch_manager" && !!teamAgentIds)),
   });
 
   if (!isEligible || !promo || dismissed.has(promo.id)) return null;
@@ -153,7 +153,7 @@ export function PromoBanner() {
       agentPromo={agentPromo}
       qualifyingCount={qualifyingCount}
       onDismiss={handleDismiss}
-      isTeam={role === "admin"}
+      isTeam={role === "branch_manager"}
     />
   );
 }

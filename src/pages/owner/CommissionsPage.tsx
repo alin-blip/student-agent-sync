@@ -222,7 +222,7 @@ export default function CommissionsPage() {
     const totalAgentOwed = snaps.reduce((s, snap) => s + Number(snap.agent_rate), 0);
     const totalAdminOwed = snaps.reduce((s, snap) => s + Number(snap.admin_rate), 0);
 
-    const agentPayments = payments.filter((p: any) => p.recipient_id === agentId && p.recipient_role === "agent");
+    const agentPayments = payments.filter((p: any) => p.recipient_id === agentId && p.recipient_role === "consultant");
     const adminPayments = profile?.admin_id
       ? payments.filter((p: any) => p.recipient_id === profile.admin_id && snaps.some((snap: any) => snap.id === p.snapshot_id))
       : [];
@@ -768,7 +768,7 @@ function AgentRow({
                         {ib.snapshots.map((snap: any) => {
                           const snapshotPayments = paymentsBySnapshot.get(snap.id) || [];
                           const agentPaid = snapshotPayments
-                            .filter((p: any) => p.recipient_role === "agent")
+                            .filter((p: any) => p.recipient_role === "consultant")
                             .reduce((s: number, p: any) => s + Number(p.amount), 0);
                           const rate = Number(snap.agent_rate);
                           const amount25 = Math.round(rate * 0.25 * 100) / 100;
@@ -849,7 +849,7 @@ function AgentRow({
                                       onClick={(e) => {
                                         e.stopPropagation();
                                         const adminPaid = snapshotPayments
-                                          .filter((p: any) => p.recipient_role === "admin")
+                                          .filter((p: any) => p.recipient_role === "branch_manager")
                                           .reduce((s: number, p: any) => s + Number(p.amount), 0);
                                         onRecordPayment(snap.id, snap.admin_id, "admin", Number(snap.admin_rate) - adminPaid);
                                       }}

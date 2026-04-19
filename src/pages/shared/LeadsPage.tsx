@@ -315,7 +315,7 @@ export default function LeadsPage() {
   const [allFilterStatus, setAllFilterStatus] = useState<string>("all");
 
   const isOwner = role === "owner";
-  const isAdmin = role === "admin";
+  const isAdmin = role === "branch_manager";
 
   // Fetch leads (RLS ensures agent/admin only see own, owner sees all)
   const { data: leads = [], isLoading } = useQuery({

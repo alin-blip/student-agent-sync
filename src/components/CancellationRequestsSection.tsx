@@ -25,7 +25,7 @@ export function CancellationRequestsSection() {
       if (error) throw error;
       return data || [];
     },
-    enabled: !!user && (role === "owner" || role === "admin"),
+    enabled: !!user && (role === "owner" || role === "branch_manager"),
   });
 
   // Resolve enrollment details

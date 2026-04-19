@@ -46,7 +46,7 @@ function formatFileSize(bytes: number | null) {
 
 export default function ResourcesPage() {
   const { role, user } = useAuth();
-  const canManage = role === "owner" || role === "admin";
+  const canManage = role === "owner" || role === "branch_manager";
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -136,7 +136,7 @@ export default function ResourcesPage() {
   const filtered = activeTab === "all" ? resources : resources.filter((r: any) => r.category === activeTab);
 
   return (
-    <DashboardLayout allowedRoles={["owner", "admin", "agent"]}>
+    <DashboardLayout allowedRoles={["owner", "branch_manager", "consultant"]}>
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center justify-between">

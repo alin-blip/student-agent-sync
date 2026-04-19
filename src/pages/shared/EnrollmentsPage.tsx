@@ -29,8 +29,8 @@ export default function EnrollmentsPage() {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const canEdit = role === "owner" || role === "admin";
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const canEdit = role === "owner" || role === "branch_manager";
+  const prefix = role === "owner" ? "/owner" : role === "branch_manager" ? "/branch" : "/consultant";
   const filterStatuses = getVisibleStatuses(role);
   const editableStatuses = role === "owner" ? getVisibleStatuses("owner") : getAdminEditableStatuses();
   const [search, setSearch] = useState("");
@@ -162,7 +162,7 @@ export default function EnrollmentsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">Enrollments</h1>
-          {(role === "owner" || role === "admin") && (
+          {(role === "owner" || role === "branch_manager") && (
             <Button variant="outline" size="sm" onClick={handleExport}>
               <Download className="w-4 h-4 mr-1" /> Export CSV
             </Button>

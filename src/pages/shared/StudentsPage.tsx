@@ -24,7 +24,7 @@ const IMMIGRATION_OPTIONS = ["All", "Pre-settled", "Settled", "British Citizen",
 export default function StudentsPage() {
   const { role } = useAuth();
   const navigate = useNavigate();
-  const prefix = role === "owner" ? "/owner" : role === "admin" ? "/admin" : "/agent";
+  const prefix = role === "owner" ? "/owner" : role === "branch_manager" ? "/branch" : "/consultant";
   const [search, setSearch] = useState("");
   const [immigrationFilter, setImmigrationFilter] = useState("All");
   const [page, setPage] = useState(0);
@@ -153,7 +153,7 @@ export default function StudentsPage() {
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Students</h1>
           <div className="flex items-center gap-2">
-            {(role === "owner" || role === "admin") && (
+            {(role === "owner" || role === "branch_manager") && (
               <Button variant="outline" size="sm" onClick={handleExport}>
                 <Download className="w-4 h-4 mr-1" /> Export CSV
               </Button>

@@ -14,12 +14,11 @@ import { AuthProvider } from "@/contexts/AuthContext";
 import Login from "./pages/Login";
 import ResetPassword from "./pages/ResetPassword";
 import OwnerDashboard from "./pages/owner/OwnerDashboard";
-import BranchDashboard from "./pages/admin/BranchDashboard";
+import BranchDashboard from "./pages/branch/BranchDashboard";
+import BranchConsultantsPage from "./pages/branch/BranchConsultantsPage";
 import CompanyDashboard from "./pages/company/CompanyDashboard";
 import CompanyBranchDetailPage from "./pages/company/CompanyBranchDetailPage";
 import CompanyBranchCreatePage from "./pages/company/CompanyBranchCreatePage";
-import AgentDashboard from "./pages/agent/AgentDashboard";
-import AdminAgentsPage from "./pages/admin/AdminAgentsPage";
 import AgentsPage from "./pages/owner/AgentsPage";
 import SettingsPage from "./pages/owner/SettingsPage";
 import KnowledgeBasePage from "./pages/owner/KnowledgeBasePage";
@@ -27,7 +26,7 @@ import AIMonitoringPage from "./pages/owner/AIMonitoringPage";
 import CommissionsPage from "./pages/owner/CommissionsPage";
 import StudentsPage from "./pages/shared/StudentsPage";
 import EnrollmentsPage from "./pages/shared/EnrollmentsPage";
-import EnrollStudent from "./pages/agent/EnrollStudent";
+import EnrollStudent from "./pages/consultant/EnrollStudent";
 import StudentDetailPage from "./pages/shared/StudentDetailPage";
 import ProfilePage from "./pages/shared/ProfilePage";
 import InvoicesPage from "./pages/shared/InvoicesPage";
@@ -85,7 +84,7 @@ const App = () => (
             <Route path="/for-business" element={<ForBusinessPage />} />
             <Route path="/apply-partner" element={<ApplyPartnerPage />} />
             <Route path="/apply-partner/thank-you" element={<ThankYouPage />} />
-            
+
             {/* Owner routes */}
             <Route path="/owner/dashboard" element={<OwnerDashboard />} />
             <Route path="/owner/learn" element={<LearnPage />} />
@@ -100,7 +99,6 @@ const App = () => (
             <Route path="/owner/ai-monitoring" element={<AIMonitoringPage />} />
             <Route path="/owner/leads" element={<LeadsPage />} />
             <Route path="/owner/tasks" element={<TasksPage />} />
-            
             <Route path="/owner/invoices" element={<OwnerInvoicesPage />} />
             <Route path="/owner/profile" element={<ProfilePage />} />
             <Route path="/owner/resources" element={<ResourcesPage />} />
@@ -111,65 +109,60 @@ const App = () => (
             <Route path="/owner/universities" element={<UniversitiesCoursesPage />} />
             <Route path="/owner/leaderboard" element={<LeaderboardPage />} />
             <Route path="/owner/embed-manager" element={<EmbedManagerPage />} />
-            
-            {/* Phase 1 B2B Routes */}
             <Route path="/owner/companies" element={<CompaniesPage />} />
             <Route path="/owner/companies/:id" element={<CompanyDetailPage />} />
             <Route path="/owner/branches/:id" element={<BranchDetailPage />} />
-
             <Route path="/owner/feedback" element={<FeedbackPage />} />
             <Route path="/owner/audit-log" element={<AuditLogPage />} />
             <Route path="/owner/company-applications" element={<CompanyApplicationsPage />} />
-            
-                        {/* Company Admin routes */}
+
+            {/* Company Admin routes */}
             <Route path="/company/dashboard" element={<CompanyDashboard />} />
             <Route path="/company/branches/:branchId" element={<CompanyBranchDetailPage />} />
             <Route path="/company/branches/new" element={<CompanyBranchCreatePage />} />
             <Route path="/company/embed-manager" element={<EmbedManagerPage />} />
             <Route path="/company/email-generator" element={<AIEmailGeneratorPage />} />
 
-            {/* Admin routes */}
-            <Route path="/admin/dashboard" element={<BranchDashboard />} />
-            <Route path="/admin/learn" element={<LearnPage />} />
-            <Route path="/admin/students" element={<StudentsPage />} />
-            <Route path="/admin/students/:id" element={<StudentDetailPage />} />
-            <Route path="/admin/enrollments" element={<EnrollmentsPage />} />
-            <Route path="/admin/messages" element={<MessagesPage />} />
-            <Route path="/admin/agents" element={<AdminAgentsPage />} />
-            <Route path="/admin/email-generator" element={<AIEmailGeneratorPage />} />
-            
-            <Route path="/admin/invoices" element={<InvoicesPage />} />
-            <Route path="/admin/profile" element={<ProfilePage />} />
-            <Route path="/admin/resources" element={<ResourcesPage />} />
-            <Route path="/admin/create-image" element={<CreateImagePage />} />
-            <Route path="/admin/enroll" element={<EnrollStudent />} />
-            <Route path="/admin/digital-card" element={<DigitalCardPage />} />
-            <Route path="/admin/social-posts" element={<SocialPostsPage />} />
-            <Route path="/admin/universities" element={<UniversitiesCoursesPage />} />
-            <Route path="/admin/leads" element={<LeadsPage />} />
-            <Route path="/admin/tasks" element={<TasksPage />} />
-            <Route path="/admin/leaderboard" element={<LeaderboardPage />} />
-            
-            {/* Agent routes */}
-            <Route path="/agent/dashboard" element={<AgentDashboard />} />
-            <Route path="/agent/learn" element={<LearnPage />} />
-            <Route path="/agent/students" element={<StudentsPage />} />
-            <Route path="/agent/students/:id" element={<StudentDetailPage />} />
-            <Route path="/agent/enrollments" element={<EnrollmentsPage />} />
-            <Route path="/agent/messages" element={<MessagesPage />} />
-            
-            <Route path="/agent/invoices" element={<InvoicesPage />} />
-            <Route path="/agent/profile" element={<ProfilePage />} />
-            <Route path="/agent/resources" element={<ResourcesPage />} />
-            <Route path="/agent/create-image" element={<CreateImagePage />} />
-            <Route path="/agent/enroll" element={<EnrollStudent />} />
-            <Route path="/agent/digital-card" element={<DigitalCardPage />} />
-            <Route path="/agent/social-posts" element={<AgentSocialFeedPage />} />
-            <Route path="/agent/universities" element={<UniversitiesCoursesPage />} />
-            <Route path="/agent/leads" element={<LeadsPage />} />
-            <Route path="/agent/tasks" element={<TasksPage />} />
-            <Route path="/agent/leaderboard" element={<LeaderboardPage />} />
-            
+            {/* Branch Manager routes */}
+            <Route path="/branch/dashboard" element={<BranchDashboard />} />
+            <Route path="/branch/learn" element={<LearnPage />} />
+            <Route path="/branch/students" element={<StudentsPage />} />
+            <Route path="/branch/students/:id" element={<StudentDetailPage />} />
+            <Route path="/branch/enrollments" element={<EnrollmentsPage />} />
+            <Route path="/branch/messages" element={<MessagesPage />} />
+            <Route path="/branch/consultants" element={<BranchConsultantsPage />} />
+            <Route path="/branch/email-generator" element={<AIEmailGeneratorPage />} />
+            <Route path="/branch/invoices" element={<InvoicesPage />} />
+            <Route path="/branch/profile" element={<ProfilePage />} />
+            <Route path="/branch/resources" element={<ResourcesPage />} />
+            <Route path="/branch/create-image" element={<CreateImagePage />} />
+            <Route path="/branch/enroll" element={<EnrollStudent />} />
+            <Route path="/branch/digital-card" element={<DigitalCardPage />} />
+            <Route path="/branch/social-posts" element={<SocialPostsPage />} />
+            <Route path="/branch/universities" element={<UniversitiesCoursesPage />} />
+            <Route path="/branch/leads" element={<LeadsPage />} />
+            <Route path="/branch/tasks" element={<TasksPage />} />
+            <Route path="/branch/leaderboard" element={<LeaderboardPage />} />
+
+            {/* Consultant routes */}
+            <Route path="/consultant/dashboard" element={<BranchDashboard />} />
+            <Route path="/consultant/learn" element={<LearnPage />} />
+            <Route path="/consultant/students" element={<StudentsPage />} />
+            <Route path="/consultant/students/:id" element={<StudentDetailPage />} />
+            <Route path="/consultant/enrollments" element={<EnrollmentsPage />} />
+            <Route path="/consultant/messages" element={<MessagesPage />} />
+            <Route path="/consultant/invoices" element={<InvoicesPage />} />
+            <Route path="/consultant/profile" element={<ProfilePage />} />
+            <Route path="/consultant/resources" element={<ResourcesPage />} />
+            <Route path="/consultant/create-image" element={<CreateImagePage />} />
+            <Route path="/consultant/enroll" element={<EnrollStudent />} />
+            <Route path="/consultant/digital-card" element={<DigitalCardPage />} />
+            <Route path="/consultant/social-posts" element={<AgentSocialFeedPage />} />
+            <Route path="/consultant/universities" element={<UniversitiesCoursesPage />} />
+            <Route path="/consultant/leads" element={<LeadsPage />} />
+            <Route path="/consultant/tasks" element={<TasksPage />} />
+            <Route path="/consultant/leaderboard" element={<LeaderboardPage />} />
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

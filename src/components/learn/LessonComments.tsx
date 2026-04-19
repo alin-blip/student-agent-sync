@@ -45,7 +45,7 @@ interface Props {
 export function LessonComments({ lessonId }: Props) {
   const { user, role } = useAuth();
   const qc = useQueryClient();
-  const canDeleteAny = role === "owner" || role === "admin";
+  const canDeleteAny = role === "owner" || role === "branch_manager";
 
   const { data: comments = [], isLoading } = useQuery({
     queryKey: ["lesson-comments", lessonId],

@@ -119,7 +119,7 @@ function ScriptDisplay({ script }: { script: string }) {
 export default function SocialPostsPage() {
   const { user, role, profile } = useAuth();
   const qc = useQueryClient();
-  const isOwnerOrAdmin = role === "owner" || role === "admin";
+  const isOwnerOrAdmin = role === "owner" || role === "branch_manager";
 
   // --- Image source tab ---
   const [imageSource, setImageSource] = useState<"ai" | "upload">("ai");
@@ -200,7 +200,7 @@ export default function SocialPostsPage() {
     queryKey: ["agents-for-posts", role],
     queryFn: async () => {
       let query = supabase.from("profiles").select("id, full_name, email, admin_id");
-      if (role === "admin") {
+      if (role === "branch_manager") {
         query = query.eq("admin_id", user!.id);
       }
       const { data, error } = await query.order("full_name");
@@ -853,7 +853,7 @@ export default function SocialPostsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All agents</SelectItem>
-                  {role === "admin" && <SelectItem value="team">My team</SelectItem>}
+                  {role === "branch_manager" && <SelectItem value="team">My team</SelectItem>}
                   <SelectItem value="select">Select individually</SelectItem>
                 </SelectContent>
               </Select>

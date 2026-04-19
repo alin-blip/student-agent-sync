@@ -115,7 +115,7 @@ export default function MessagesPage() {
       }));
 
       // Filter based on current user's role
-      if (role === "agent") {
+      if (role === "consultant") {
         // Agent can only message their admin
         const { data: myProfile } = await supabase
           .from("profiles").select("admin_id").eq("id", user!.id).single();
@@ -124,7 +124,7 @@ export default function MessagesPage() {
         } else {
           enriched = [];
         }
-      } else if (role === "admin") {
+      } else if (role === "branch_manager") {
         // Admin can message: their agents + owner
         enriched = enriched.filter((u: any) =>
           u.role === "owner" || u.admin_id === user!.id
