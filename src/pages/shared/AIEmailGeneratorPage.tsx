@@ -104,7 +104,7 @@ export default function AIEmailGeneratorPage() {
         const { data: currentBranch, error: branchError } = await supabase.from("branches").select("slug").eq("id", branchId).single();
         if (branchError) console.error("Error fetching current branch for link:", branchError);
         applyLink = currentBranch ? `https://partners.eduforyou.co.uk/branch-card/${currentBranch.slug}` : "https://partners.eduforyou.co.uk/apply-partner";
-      } else if (role === APP_ROLES.CONSULTANT || role === APP_ROLES.LEGACY_AGENT) {
+      } else if (role === APP_ROLES.CONSULTANT) {
         // Assuming consultant has a digital card
         applyLink = `https://partners.eduforyou.co.uk/card/${profileData?.slug ?? ""}`;
       }
