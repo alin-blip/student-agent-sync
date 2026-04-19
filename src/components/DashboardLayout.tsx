@@ -4,6 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { AppSidebar } from "@/components/AppSidebar";
 import { AIChatPanel } from "@/components/AIChatPanel";
 import { NotificationBell } from "@/components/NotificationBell";
+import { RoleSwitcher } from "@/components/RoleSwitcher";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Badge } from "@/components/ui/badge";
 import { PresenceProvider } from "@/contexts/PresenceContext";
@@ -98,11 +99,12 @@ export function DashboardLayout({ children, allowedRoles }: DashboardLayoutProps
               <SidebarTrigger />
             </div>
             <div className="flex items-center gap-3">
+              <RoleSwitcher />
               <NotificationBell />
               <Badge variant="outline" className="text-xs capitalize font-normal">
                 {getRoleLabel(role || '')}
               </Badge>
-              <span className="text-sm font-medium">{profile?.full_name}</span>
+              <span className="text-sm font-medium hidden sm:inline">{profile?.full_name}</span>
             </div>
           </header>
           <main className="flex-1 overflow-auto bg-background p-3 sm:p-6">
