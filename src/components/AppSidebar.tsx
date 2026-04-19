@@ -194,7 +194,7 @@ export function AppSidebar() {
       { title: "Settings", url: `/owner/settings`, icon: Settings },
       { title: "Embed Manager", url: `/owner/embed-manager`, icon: Share2 },
     );
-  } else if (role === APP_ROLES.BRANCH_MANAGER) {
+  } else if (role === APP_ROLES.BRANCH_MANAGER || role === APP_ROLES.LEGACY_ADMIN) {
     managementItems.push(
       { title: "My Consultants", url: `/admin/agents`, icon: UserCog },
       { title: "Email Generator", url: `/admin/email-generator`, icon: Mail },
